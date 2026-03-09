@@ -12,7 +12,7 @@ const HeroSection = () => {
 
       {/* Fixed nav logo */}
       <div className="absolute top-0 left-0 right-0 z-20 px-6 py-6">
-        <img src={logo} alt="GridForge Energy" className="h-10 md:h-12" />
+        <img src={logo} alt="GridForge Energy" className="h-10 md:h-12 brightness-[1.8] contrast-[1.1]" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">

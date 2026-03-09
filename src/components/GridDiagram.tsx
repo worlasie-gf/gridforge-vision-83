@@ -56,7 +56,7 @@ const GridDiagram = () => {
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
             <motion.circle
               r="0.8"
-              fill="hsl(217 91% 60%)"
+              fill="hsl(174 72% 46%)"
               initial={{ cx: node.x, cy: node.y }}
               animate={{
                 cx: [node.x, 50, node.x],

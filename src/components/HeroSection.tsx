@@ -1,18 +1,18 @@
 import { motion } from "framer-motion";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo-2.png";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       {/* Grid background */}
-      <div className="absolute inset-0 grid-bg opacity-30" />
+      <div className="absolute inset-0 grid-bg opacity-40" />
 
       {/* Radial gradient overlay */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(217_91%_60%_/_0.08),_transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(170_40%_50%_/_0.06),_transparent_70%)]" />
 
       {/* Fixed nav logo */}
       <div className="absolute top-0 left-0 right-0 z-20 px-6 py-6">
-        <img src={logo} alt="GridForge Energy" className="h-10 md:h-12 brightness-[1.8] contrast-[1.1]" />
+        <img src={logo} alt="GridForge Energy" className="h-10 md:h-12" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
@@ -26,7 +26,7 @@ const HeroSection = () => {
         </motion.div>
 
         <motion.h1
-          className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight leading-[1.05] mb-8"
+          className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight leading-[1.05] mb-8 text-foreground"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15 }}

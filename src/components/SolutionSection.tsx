@@ -35,10 +35,10 @@ const blocks = [
 
 const SolutionSection = () => {
   return (
-    <section className="py-32 px-6">
+    <section className="py-32 px-6 section-light">
       <div className="max-w-5xl mx-auto">
         <motion.h2
-          className="text-3xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight text-center mb-20"
+          className="text-3xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight text-center mb-20 text-foreground"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -52,16 +52,16 @@ const SolutionSection = () => {
           {blocks.map((block, i) => (
             <motion.div
               key={i}
-              className="group p-8 rounded-2xl border border-border bg-card hover:border-primary/30 transition-colors duration-500"
+              className="group p-8 rounded-2xl border border-border bg-card hover:border-primary/40 transition-colors duration-500 shadow-sm"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.15 }}
             >
-              <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-primary mb-6 group-hover:glow transition-shadow duration-500">
+              <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center text-primary mb-6 group-hover:glow transition-shadow duration-500">
                 {block.icon}
               </div>
-              <h3 className="text-xl font-display font-semibold mb-3">{block.title}</h3>
+              <h3 className="text-xl font-display font-semibold mb-3 text-foreground">{block.title}</h3>
               <p className="text-muted-foreground leading-relaxed text-sm">{block.description}</p>
             </motion.div>
           ))}

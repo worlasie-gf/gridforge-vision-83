@@ -2,13 +2,13 @@ import { motion } from "framer-motion";
 
 const FutureSection = () => {
   return (
-    <section className="py-32 px-6 relative overflow-hidden">
+    <section className="py-32 px-6 relative overflow-hidden section-light">
       {/* Subtle radial glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_hsl(217_91%_60%_/_0.06),_transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_hsl(170_40%_50%_/_0.05),_transparent_60%)]" />
 
       <div className="relative z-10 max-w-3xl mx-auto text-center">
         <motion.h2
-          className="text-3xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight mb-10"
+          className="text-3xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight mb-10 text-foreground"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

@@ -8,7 +8,8 @@ const Footer = () => {
           <img src={logoSymbol} alt="GridForge" className="h-8 w-8" />
           <div>
             <p className="font-display font-semibold text-lg">GridForge</p>
-          <p className="text-muted-foreground text-sm mt-1">Infrastructure for the flexible grid</p>
+            <p className="text-muted-foreground text-sm">Infrastructure for the flexible grid</p>
+          </div>
         </div>
         <p className="text-muted-foreground/50 text-xs">© {new Date().getFullYear()} GridForge. All rights reserved.</p>
       </div>

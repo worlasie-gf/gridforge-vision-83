@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import logo from "@/assets/logo.png";
 
 const HeroSection = () => {
   return (
@@ -9,15 +10,19 @@ const HeroSection = () => {
       {/* Radial gradient overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(217_91%_60%_/_0.08),_transparent_70%)]" />
 
+      {/* Fixed nav logo */}
+      <div className="absolute top-0 left-0 right-0 z-20 px-6 py-6">
+        <img src={logo} alt="GridForge Energy" className="h-10 md:h-12" />
+      </div>
+
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
+          className="mb-8"
         >
-          <p className="text-primary font-medium text-sm tracking-widest uppercase mb-8 font-display">
-            GridForge
-          </p>
+          <img src={logo} alt="GridForge Energy" className="h-10 mx-auto opacity-0 pointer-events-none" />
         </motion.div>
 
         <motion.h1

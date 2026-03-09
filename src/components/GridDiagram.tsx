@@ -29,7 +29,7 @@ const GridDiagram = () => {
               y1="50"
               x2={node.x}
               y2={node.y}
-              stroke="hsl(217 91% 60%)"
+              stroke="hsl(174 72% 46%)"
               strokeWidth="0.3"
               initial={{ pathLength: 0, opacity: 0 }}
               whileInView={{ pathLength: 1, opacity: 0.4 }}

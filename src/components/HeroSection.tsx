@@ -5,7 +5,7 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-background">
       <div className="absolute inset-0 grid-bg opacity-30" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(170_40%_50%_/_0.08),_transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(199_88.7%_48.4%_/_0.08),_transparent_60%)]" />
 
       <div className="absolute top-0 left-0 right-0 z-20 px-6 py-6 flex items-center justify-between max-w-7xl mx-auto w-full">
         <img src={logo} alt="GridForge Energy" className="h-10 md:h-12" />

@@ -6,46 +6,46 @@
 
 @layer base {
   :root {
-    --background: 210 33% 99%;
-    --foreground: 214 38% 25%;
+    --background: 214 100% 98.6%;
+    --foreground: 222 47.4% 11.2%;
 
     --card: 0 0% 100%;
-    --card-foreground: 214 38% 25%;
+    --card-foreground: 222 47.4% 11.2%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 214 38% 25%;
+    --popover-foreground: 222 47.4% 11.2%;
 
-    --primary: 170 40% 50%;
+    --primary: 221 83.2% 53.3%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 144 40% 66%;
-    --secondary-foreground: 214 38% 25%;
+    --secondary: 224 76.3% 48%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 33% 96%;
-    --muted-foreground: 213 18% 53%;
+    --muted: 214 94.6% 92.7%;
+    --muted-foreground: 215 25% 27%;
 
-    --accent: 170 40% 50%;
+    --accent: 199 88.7% 48.4%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 90%;
-    --input: 210 20% 90%;
-    --ring: 170 40% 50%;
+    --border: 214 94.6% 92.7%;
+    --input: 214 94.6% 92.7%;
+    --ring: 221 83.2% 53.3%;
 
     --radius: 0.75rem;
 
-    --glow: 170 40% 50%;
+    --glow: 199 88.7% 48.4%;
 
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 214 38% 25%;
-    --sidebar-primary: 170 40% 50%;
+    --sidebar-background: 248 251 255;
+    --sidebar-foreground: 222 47.4% 11.2%;
+    --sidebar-primary: 221 83.2% 53.3%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 33% 96%;
-    --sidebar-accent-foreground: 213 18% 53%;
-    --sidebar-border: 210 20% 90%;
-    --sidebar-ring: 170 40% 50%;
+    --sidebar-accent: 214 94.6% 92.7%;
+    --sidebar-accent-foreground: 222 47.4% 11.2%;
+    --sidebar-border: 214 94.6% 92.7%;
+    --sidebar-ring: 221 83.2% 53.3%;
   }
 }
 
@@ -72,7 +72,7 @@
 
   .text-gradient-primary {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(170 40% 50%), hsl(144 40% 66%));
+    background-image: linear-gradient(135deg, hsl(221 83.2% 53.3%), hsl(199 88.7% 48.4%));
   }
 
   .glow {
@@ -87,6 +87,6 @@
   }
 
   .section-light {
-    background-color: hsl(210 33% 98%);
+    background-color: hsl(214 94.6% 92.7% / 0.35);
   }
 }

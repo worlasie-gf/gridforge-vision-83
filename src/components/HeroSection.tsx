@@ -17,8 +17,8 @@ const HeroSection = () => {
         </nav>
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-20 grid lg:grid-cols-12 gap-12 items-center">
-        <div className="lg:col-span-7">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-20">
+        <div>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -71,34 +71,6 @@ const HeroSection = () => {
             </a>
           </motion.div>
         </div>
-
-        <motion.div
-          className="lg:col-span-5"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <div className="relative rounded-2xl border border-border bg-card p-8 shadow-sm">
-            <div className="absolute -top-3 left-6 px-3 py-1 rounded-full bg-primary text-primary-foreground text-[10px] font-medium tracking-wide uppercase">
-              Verification Layer
-            </div>
-            <div className="space-y-4">
-              {[
-                { label: "Reported MW", value: "4,820", status: "Submitted" },
-                { label: "Verified MW", value: "4,807", status: "Settlement-grade", accent: true },
-                { label: "Discrepancy", value: "0.27%", status: "Within tolerance" },
-              ].map((row) => (
-                <div key={row.label} className="flex items-center justify-between py-3 border-b border-border last:border-0">
-                  <div>
-                    <p className="text-xs text-muted-foreground">{row.label}</p>
-                    <p className={`text-2xl font-display font-semibold ${row.accent ? "text-primary" : "text-foreground"}`}>{row.value}</p>
-                  </div>
-                  <span className="text-xs text-muted-foreground">{row.status}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

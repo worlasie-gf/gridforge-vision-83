@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 const FutureSection = () => {
   return (
     <section className="py-32 px-6 relative overflow-hidden section-light">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_hsl(170_40%_50%_/_0.07),_transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_hsl(199_88.7%_48.4%_/_0.07),_transparent_60%)]" />
 
       <div className="relative z-10 max-w-3xl mx-auto text-center">
         <motion.h2

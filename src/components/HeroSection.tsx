@@ -17,8 +17,8 @@ const HeroSection = () => {
         </nav>
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-20 grid lg:grid-cols-12 gap-12 items-center">
-        <div className="lg:col-span-7">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-20">
+        <div>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}

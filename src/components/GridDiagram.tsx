@@ -18,11 +18,12 @@ const GridDiagram = () => {
   const nodeH = 72;
   const nodeR = 16;
 
-  const teal = "#4EB3A6";
-  const navy = "#273A59";
-  const borderColor = "#D9E2EC";
+  const primaryBlue = "#2563EB";
+  const darkBlue = "#1D4ED8";
+  const accentCyan = "#0EA5E9";
+  const borderColor = "#DBEAFE";
   const cardBg = "#FFFFFF";
-  const subText = "#8FA1B5";
+  const textColor = "#0F172A";
 
   return (
     <div className="relative w-full max-w-3xl mx-auto">
@@ -43,7 +44,7 @@ const GridDiagram = () => {
             </feMerge>
           </filter>
           <filter id="cardShadow">
-            <feDropShadow dx="0" dy="2" stdDeviation="6" floodColor="#273A59" floodOpacity="0.08" />
+            <feDropShadow dx="0" dy="2" stdDeviation="6" floodColor={darkBlue} floodOpacity="0.08" />
           </filter>
         </defs>
 
@@ -62,7 +63,7 @@ const GridDiagram = () => {
             <g key={i}>
               <motion.path
                 d={path}
-                stroke={teal}
+                stroke={accentCyan}
                 strokeWidth="2"
                 strokeOpacity="0.15"
                 filter="url(#softGlow)"
@@ -74,7 +75,7 @@ const GridDiagram = () => {
               />
               <motion.path
                 d={path}
-                stroke={teal}
+                stroke={accentCyan}
                 strokeWidth="1.5"
                 strokeOpacity="0.4"
                 fill="none"
@@ -85,7 +86,7 @@ const GridDiagram = () => {
               />
               <motion.circle
                 r="3"
-                fill={teal}
+                fill={accentCyan}
                 filter="url(#glow)"
                 initial={{ offsetDistance: "0%" }}
                 animate={{ offsetDistance: ["0%", "100%", "0%"] }}
@@ -111,12 +112,12 @@ const GridDiagram = () => {
           <rect
             x={nodes.utilities.x - nodeW / 2} y={nodes.utilities.y - nodeH / 2}
             width={nodeW} height={nodeH} rx={nodeR}
-            fill={cardBg} stroke={teal} strokeWidth="1.5" filter="url(#cardShadow)"
+            fill={cardBg} stroke={primaryBlue} strokeWidth="1.5" filter="url(#cardShadow)"
           />
           <g transform={`translate(${nodes.utilities.x - 8}, ${nodes.utilities.y - 18})`}>
-            <path d="M9 1L1 10h7l-1 6 8-9H8l1-6z" stroke={teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <path d="M9 1L1 10h7l-1 6 8-9H8l1-6z" stroke={primaryBlue} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
           </g>
-          <text x={nodes.utilities.x} y={nodes.utilities.y + 20} textAnchor="middle" fill={navy} fontSize="13" fontFamily="'Space Grotesk', sans-serif" fontWeight="600">
+          <text x={nodes.utilities.x} y={nodes.utilities.y + 20} textAnchor="middle" fill={textColor} fontSize="13" fontFamily="'Space Grotesk', sans-serif" fontWeight="600">
             {nodes.utilities.label}
           </text>
         </motion.g>
@@ -134,14 +135,14 @@ const GridDiagram = () => {
             fill={cardBg} stroke={borderColor} strokeWidth="1" filter="url(#cardShadow)"
           />
           <g transform={`translate(${nodes.flexibility.x - 8}, ${nodes.flexibility.y - 22})`}>
-            <path d="M4 12a4 4 0 0 1 4-4" stroke={teal} strokeWidth="1.5" fill="none" strokeLinecap="round" />
-            <path d="M1 15a8 8 0 0 1 8-8" stroke={teal} strokeWidth="1.5" fill="none" strokeLinecap="round" />
-            <circle cx="8" cy="12" r="1.5" fill={teal} />
+            <path d="M4 12a4 4 0 0 1 4-4" stroke={accentCyan} strokeWidth="1.5" fill="none" strokeLinecap="round" />
+            <path d="M1 15a8 8 0 0 1 8-8" stroke={accentCyan} strokeWidth="1.5" fill="none" strokeLinecap="round" />
+            <circle cx="8" cy="12" r="1.5" fill={accentCyan} />
           </g>
-          <text x={nodes.flexibility.x} y={nodes.flexibility.y + 14} textAnchor="middle" fill={navy} fontSize="12" fontFamily="'Space Grotesk', sans-serif" fontWeight="500">
+          <text x={nodes.flexibility.x} y={nodes.flexibility.y + 14} textAnchor="middle" fill={textColor} fontSize="12" fontFamily="'Space Grotesk', sans-serif" fontWeight="500">
             Flexibility Providers
           </text>
-          <text x={nodes.flexibility.x} y={nodes.flexibility.y + 28} textAnchor="middle" fill={subText} fontSize="10" fontFamily="'Inter', sans-serif">
+          <text x={nodes.flexibility.x} y={nodes.flexibility.y + 28} textAnchor="middle" fill={textColor} fillOpacity="0.65" fontSize="10" fontFamily="'Inter', sans-serif">
             (Aggregators)
           </text>
         </motion.g>
@@ -159,13 +160,13 @@ const GridDiagram = () => {
             fill={cardBg} stroke={borderColor} strokeWidth="1" filter="url(#cardShadow)"
           />
           <g transform={`translate(${nodes.loads.x - 8}, ${nodes.loads.y - 20})`}>
-            <rect x="2" y="2" width="12" height="14" rx="1" stroke={teal} strokeWidth="1.5" fill="none" />
-            <line x1="6" y1="5" x2="6" y2="7" stroke={teal} strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="10" y1="5" x2="10" y2="7" stroke={teal} strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="6" y1="10" x2="6" y2="12" stroke={teal} strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="10" y1="10" x2="10" y2="12" stroke={teal} strokeWidth="1.5" strokeLinecap="round" />
+            <rect x="2" y="2" width="12" height="14" rx="1" stroke={accentCyan} strokeWidth="1.5" fill="none" />
+            <line x1="6" y1="5" x2="6" y2="7" stroke={accentCyan} strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="10" y1="5" x2="10" y2="7" stroke={accentCyan} strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="6" y1="10" x2="6" y2="12" stroke={accentCyan} strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="10" y1="10" x2="10" y2="12" stroke={accentCyan} strokeWidth="1.5" strokeLinecap="round" />
           </g>
-          <text x={nodes.loads.x} y={nodes.loads.y + 18} textAnchor="middle" fill={navy} fontSize="12" fontFamily="'Space Grotesk', sans-serif" fontWeight="500">
+          <text x={nodes.loads.x} y={nodes.loads.y + 18} textAnchor="middle" fill={textColor} fontSize="12" fontFamily="'Space Grotesk', sans-serif" fontWeight="500">
             Large Loads
           </text>
         </motion.g>
@@ -183,16 +184,16 @@ const GridDiagram = () => {
             fill={cardBg} stroke={borderColor} strokeWidth="1" filter="url(#cardShadow)"
           />
           <g transform={`translate(${nodes.energy.x - 8}, ${nodes.energy.y - 22})`}>
-            <circle cx="8" cy="8" r="4" stroke={teal} strokeWidth="1.5" fill="none" />
-            <line x1="8" y1="0" x2="8" y2="2" stroke={teal} strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="8" y1="14" x2="8" y2="16" stroke={teal} strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="0" y1="8" x2="2" y2="8" stroke={teal} strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="14" y1="8" x2="16" y2="8" stroke={teal} strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="8" cy="8" r="4" stroke={accentCyan} strokeWidth="1.5" fill="none" />
+            <line x1="8" y1="0" x2="8" y2="2" stroke={accentCyan} strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="8" y1="14" x2="8" y2="16" stroke={accentCyan} strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="0" y1="8" x2="2" y2="8" stroke={accentCyan} strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="14" y1="8" x2="16" y2="8" stroke={accentCyan} strokeWidth="1.5" strokeLinecap="round" />
           </g>
-          <text x={nodes.energy.x} y={nodes.energy.y + 14} textAnchor="middle" fill={navy} fontSize="12" fontFamily="'Space Grotesk', sans-serif" fontWeight="500">
+          <text x={nodes.energy.x} y={nodes.energy.y + 14} textAnchor="middle" fill={textColor} fontSize="12" fontFamily="'Space Grotesk', sans-serif" fontWeight="500">
             Energy Providers
           </text>
-          <text x={nodes.energy.x} y={nodes.energy.y + 28} textAnchor="middle" fill={subText} fontSize="10" fontFamily="'Inter', sans-serif">
+          <text x={nodes.energy.x} y={nodes.energy.y + 28} textAnchor="middle" fill={textColor} fillOpacity="0.65" fontSize="10" fontFamily="'Inter', sans-serif">
             (Utility-scale solar or storage)
           </text>
         </motion.g>

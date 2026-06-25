@@ -1,6 +1,10 @@
 import { motion } from "framer-motion";
 
-const FutureSection = () => {
+type FutureSectionProps = {
+  onLeadCaptureOpen: () => void;
+};
+
+const FutureSection = ({ onLeadCaptureOpen }: FutureSectionProps) => {
   return (
     <section className="py-32 px-6 relative overflow-hidden section-light">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_hsl(199_88.7%_48.4%_/_0.07),_transparent_60%)]" />
@@ -33,15 +37,16 @@ const FutureSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.35 }}
         >
-          <a
-            href="#"
+          <button
+            type="button"
+            onClick={onLeadCaptureOpen}
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity glow"
           >
             Get in touch
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </a>
+          </button>
         </motion.div>
       </div>
     </section>

@@ -68,7 +68,7 @@ const LeadCaptureModal = ({ open, onOpenChange }: LeadCaptureModalProps) => {
         title: "Request submitted",
         description: "Thanks - GridForge will follow up soon.",
       });
-    } catch (error) {
+    } catch {
       setStatusMessage("Something went wrong. Please try again.");
       toast({
         title: "Submission failed",

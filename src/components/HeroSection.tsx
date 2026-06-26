@@ -8,7 +8,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(199_88.7%_48.4%_/_0.08),_transparent_60%)]" />
 
       <div className="absolute top-0 left-0 right-0 z-20 px-6 py-6 flex items-center justify-between max-w-7xl mx-auto w-full">
-        <img src={logo} alt="GridForge Energy" className="h-14 md:h-16" />
+        <img src={logo} alt="GridForge Energy" className="h-28 md:h-32" />
         <nav className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
           <a href="#problem" className="hover:text-foreground transition-colors">Problem</a>
           <a href="#how-we-fit" className="hover:text-foreground transition-colors">How we fit</a>

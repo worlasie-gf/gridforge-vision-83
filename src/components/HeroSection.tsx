@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import logo from "@/assets/logo.png";
+import SiteHeader from "@/components/SiteHeader";
 
 const HeroSection = () => {
   return (

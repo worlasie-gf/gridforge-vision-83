@@ -1,6 +1,6 @@
 import { type FormEvent, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { BatteryCharging, Sparkles } from "lucide-react";
 
 import {
@@ -35,6 +35,17 @@ const ASSET_OPTIONS = [
   "Other",
 ] as const;
 
+const INTEREST_OPTIONS = [
+  "Home battery storage",
+  "EV / EV charger",
+  "Smart thermostat",
+  "Electric water heater",
+  "Solar + storage",
+  "Time-of-use rate plans",
+  "Learning about demand response programs",
+  "Other",
+] as const;
+
 const CUSTOMER_TYPES = [
   "Homeowner / resident",
   "Renter",
@@ -52,7 +63,9 @@ const initialFormState = {
   customerType: "",
   status: "" as "" | "today" | "future",
   assets: [] as string[],
+  interests: [] as string[],
   inProgram: "",
+  notify: "",
 };
 
 type FormState = typeof initialFormState;
@@ -65,15 +78,27 @@ const DemandFlexibility = () => {
 
   const chooseStatus = (status: "today" | "future") => {
     setFormData((current) => ({ ...current, status }));
-    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setStatusMessage("");
+    setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
   };
 
   const toggleAsset = (asset: string) => {
     setFormData((current) => ({
       ...current,
       assets: current.assets.includes(asset)
-        ? current.assets.filter((a) => a !== asset)
+        ? current.assets.filter((a) => !== asset)
         : [...current.assets, asset],
+    }));
+  };
+
+  const toggleInterest = (interest: string) => {
+    setFormData((current) => ({
+      ...current,
+      interests: current.interests.includes(interest)
+        ? current.interests.filter((a) => a !== interest)
+        : [...current.interests, interest],
     }));
   };
 
@@ -90,6 +115,7 @@ const DemandFlexibility = () => {
         body: JSON.stringify({
           ...formData,
           assets: formData.assets.join(", "),
+          interests: formData.interests.join(", "),
           submittedAt: new Date().toISOString(),
           source: "Demand Flexibility page",
         }),
@@ -166,7 +192,7 @@ const DemandFlexibility = () => {
       <section className="section-light">
         <div className="max-w-3xl mx-auto px-6 py-20 text-center">
           <h2 className="text-2xl md:text-3xl font-display font-semibold tracking-tight mb-4">
-            The grid can’t plan around flexibility it can’t see.
+            The grid can't plan around flexibility it can't see.
           </h2>
           <p className="text-muted-foreground">
             Knowing where flexible resources are, what they can do, and where people are
@@ -208,7 +234,7 @@ const DemandFlexibility = () => {
           >
             <Sparkles className="h-7 w-7 text-primary mb-4" />
             <h3 className="font-display font-semibold text-lg mb-2">
-              Not yet — but I’m interested
+              Not yet — but I'm interested
             </h3>
             <p className="text-sm text-muted-foreground">
               I would consider participating in a demand flexibility opportunity in the future.
@@ -217,177 +243,217 @@ const DemandFlexibility = () => {
         </div>
       </section>
 
-      {/* Form */}
+      {/* Form — appears only after a card is selected */}
       <section ref={formRef} className="scroll-mt-8">
         <div className="max-w-2xl mx-auto px-6 pb-20">
-          <div className="rounded-2xl border border-border bg-card p-6 sm:p-10 shadow-sm">
-            <p className="text-muted-foreground mb-8">
-              <span className="font-semibold text-foreground">
-                Joining the list adds you to the picture.
-              </span>{" "}
-              It does not enroll you in a utility, demand response, or energy program, and it
-              does not commit you to participate in anything.
-            </p>
+          <AnimatePresence mode="wait">
+            {formData.status && (
+              <motion.div
+                key={formData.status}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                className="rounded-2xl border border-border bg-card p-6 sm:p-10 shadow-sm"
+              >
+                <p className="text-muted-foreground mb-8">
+                  <span className="font-semibold text-foreground">
+                    Joining the list adds you to the picture.
+                  </span>{" "}
+                  It does not enroll you in a utility, demand response, or energy program, and it
+                  does not commit you to participate in anything.
+                </p>
 
-            <form className="space-y-5" onSubmit={handleSubmit}>
-              <div className="grid sm:grid-cols-2 gap-5">
-                <div className="space-y-2">
-                  <Label htmlFor="df-name">Name</Label>
-                  <Input
-                    id="df-name"
-                    autoComplete="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData((c) => ({ ...c, name: e.target.value }))}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="df-email">Email</Label>
-                  <Input
-                    id="df-email"
-                    type="email"
-                    autoComplete="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData((c) => ({ ...c, email: e.target.value }))}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="grid sm:grid-cols-2 gap-5">
-                <div className="space-y-2">
-                  <Label htmlFor="df-zip">ZIP code</Label>
-                  <Input
-                    id="df-zip"
-                    inputMode="numeric"
-                    autoComplete="postal-code"
-                    value={formData.zip}
-                    onChange={(e) => setFormData((c) => ({ ...c, zip: e.target.value }))}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="df-provider">Electricity provider</Label>
-                  <Input
-                    id="df-provider"
-                    placeholder="e.g. your utility"
-                    value={formData.provider}
-                    onChange={(e) => setFormData((c) => ({ ...c, provider: e.target.value }))}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Which best describes you?</Label>
-                <Select
-                  value={formData.customerType}
-                  onValueChange={(value) => setFormData((c) => ({ ...c, customerType: value }))}
-                  required
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select one" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CUSTOMER_TYPES.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-3">
-                <Label>Do you have flexibility today?</Label>
-                <RadioGroup
-                  value={formData.status}
-                  onValueChange={(value) =>
-                    setFormData((c) => ({ ...c, status: value as FormState["status"] }))
-                  }
-                  required
-                >
-                  <div className="flex items-center gap-2">
-                    <RadioGroupItem value="today" id="df-status-today" />
-                    <Label htmlFor="df-status-today" className="font-normal">
-                      Yes — I have flexible assets today
-                    </Label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <RadioGroupItem value="future" id="df-status-future" />
-                    <Label htmlFor="df-status-future" className="font-normal">
-                      Not yet — but I’m interested in the future
-                    </Label>
-                  </div>
-                </RadioGroup>
-              </div>
-
-              <div className="space-y-3">
-                <Label>
-                  Flexible assets{" "}
-                  <span className="text-muted-foreground font-normal">
-                    (select any that apply)
-                  </span>
-                </Label>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {ASSET_OPTIONS.map((asset) => (
-                    <div key={asset} className="flex items-center gap-2">
-                      <Checkbox
-                        id={`df-asset-${asset}`}
-                        checked={formData.assets.includes(asset)}
-                        onCheckedChange={() => toggleAsset(asset)}
+                <form className="space-y-5" onSubmit={handleSubmit}>
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <Label htmlFor="df-name">Name</Label>
+                      <Input
+                        id="df-name"
+                        autoComplete="name"
+                        value={formData.name}
+                        onChange={(e) => setFormData((c) => ({ ...c, name: e.target.value }))}
+                        required
                       />
-                      <Label htmlFor={`df-asset-${asset}`} className="font-normal">
-                        {asset}
-                      </Label>
                     </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <Label>
-                  Do you already participate in a demand flexibility or demand response program?
-                </Label>
-                <RadioGroup
-                  value={formData.inProgram}
-                  onValueChange={(value) => setFormData((c) => ({ ...c, inProgram: value }))}
-                  required
-                >
-                  <div className="flex items-center gap-2">
-                    <RadioGroupItem value="yes" id="df-program-yes" />
-                    <Label htmlFor="df-program-yes" className="font-normal">
-                      Yes
-                    </Label>
+                    <div className="space-y-2">
+                      <Label htmlFor="df-email">Email</Label>
+                      <Input
+                        id="df-email"
+                        type="email"
+                        autoComplete="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData((c) => ({ ...c, email: e.target.value }))}
+                        required
+                      />
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <RadioGroupItem value="no" id="df-program-no" />
-                    <Label htmlFor="df-program-no" className="font-normal">
-                      No
-                    </Label>
+
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <Label htmlFor="df-zip">ZIP code</Label>
+                      <Input
+                        id="df-zip"
+                        inputMode="numeric"
+                        autoComplete="postal-code"
+                        value={formData.zip}
+                        onChange={(e) => setFormData((c) => ({ ...c, zip: e.target.value }))}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="df-provider">Electricity provider</Label>
+                      <Input
+                        id="df-provider"
+                        placeholder="e.g. your utility"
+                        value={formData.provider}
+                        onChange={(e) => setFormData((c) => ({ ...c, provider: e.target.value }))}
+                      />
+                    </div>
                   </div>
-                </RadioGroup>
-              </div>
 
-              {statusMessage ? (
-                <p className="text-sm text-muted-foreground" aria-live="polite">
-                  {statusMessage}
-                </p>
-              ) : null}
+                  <div className="space-y-2">
+                    <Label>Which best describes you?</Label>
+                    <Select
+                      value={formData.customerType}
+                      onValueChange={(value) => setFormData((c) => ({ ...c, customerType: value }))}
+                      required
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select one" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CUSTOMER_TYPES.map((type) => (
+                          <SelectItem key={type} value={type}>
+                            {type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full inline-flex h-12 items-center justify-center rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:pointer-events-none disabled:opacity-60 glow"
-                >
-                  {isSubmitting ? "Submitting..." : "Join the list"}
-                </button>
-                <p className="text-xs text-muted-foreground text-center mt-3">
-                  Joining this list does not enroll you in an energy or utility program.
-                </p>
-              </div>
-            </form>
-          </div>
+                  {formData.status === "today" ? (
+                    <>
+                      <div className="space-y-3">
+                        <Label>
+                          Flexible assets you have today{" "}
+                          <span className="text-muted-foreground font-normal">
+                            (select any that apply)
+                          </span>
+                        </Label>
+                        <div className="grid sm:grid-cols-2 gap-3">
+                          {ASSET_OPTIONS.map((asset) => (
+                            <div key={asset} className="flex items-center gap-2">
+                              <Checkbox
+                                id={`df-asset-${asset}`}
+                                checked={formData.assets.includes(asset)}
+                                onCheckedChange={() => toggleAsset(asset)}
+                              />
+                              <Label htmlFor={`df-asset-${asset}`} className="font-normal">
+                                {asset}
+                              </Label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <Label>
+                          Do you already participate in a demand flexibility or demand response program?
+                        </Label>
+                        <RadioGroup
+                          value={formData.inProgram}
+                          onValueChange={(value) => setFormData((c) => ({ ...c, inProgram: value }))}
+                          required
+                        >
+                          <div className="flex items-center gap-2">
+                            <RadioGroupItem value="yes" id="df-program-yes" />
+                            <Label htmlFor="df-program-yes" className="font-normal">
+                              Yes
+                            </Label>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <RadioGroupItem value="no" id="df-program-no" />
+                            <Label htmlFor="df-program-no" className="font-normal">
+                              No
+                            </Label>
+                          </div>
+                        </RadioGroup>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="space-y-3">
+                        <Label>
+                          What are you most interested in?{" "}
+                          <span className="text-muted-foreground font-normal">
+                            (select any that apply)
+                          </span>
+                        </Label>
+                        <div className="grid sm:grid-cols-2 gap-3">
+                          {INTEREST_OPTIONS.map((interest) => (
+                            <div key={interest} className="flex items-center gap-2">
+                              <Checkbox
+                                id={`df-interest-${interest}`}
+                                checked={formData.interests.includes(interest)}
+                                onCheckedChange={() => toggleInterest(interest)}
+                              />
+                              <Label htmlFor={`df-interest-${interest}`} className="font-normal">
+                                {interest}
+                              </Label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <Label>
+                          Would you like to be notified when a program is available in your area?
+                        </Label>
+                        <RadioGroup
+                          value={formData.notify}
+                          onValueChange={(value) => setFormData((c) => ({ ...c, notify: value }))}
+                          required
+                        >
+                          <div className="flex items-center gap-2">
+                            <RadioGroupItem value="yes" id="df-notify-yes" />
+                            <Label htmlFor="df-notify-yes" className="font-normal">
+                              Yes — let me know
+                            </Label>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <RadioGroupItem value="no" id="df-notify-no" />
+                            <Label htmlFor="df-notify-no" className="font-normal">
+                              Not right now
+                            </Label>
+                          </div>
+                        </RadioGroup>
+                      </div>
+                    </>
+                  )}
+
+                  {statusMessage ? (
+                    <p className="text-sm text-muted-foreground" aria-live="polite">
+                      {statusMessage}
+                    </p>
+                  ) : null}
+
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full inline-flex h-12 items-center justify-center rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:pointer-events-none disabled:opacity-60 glow"
+                    >
+                      {isSubmitting ? "Submitting..." : "Join the list"}
+                    </button>
+                    <p className="text-xs text-muted-foreground text-center mt-3">
+                      Joining this list does not enroll you in an energy or utility program.
+                    </p>
+                  </div>
+                </form>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
 

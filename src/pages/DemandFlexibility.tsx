@@ -134,8 +134,9 @@ const DemandFlexibility = () => {
 
       if (error) throw error;
 
-      setFormData(initialFormState);
-      setStatusMessage("Thanks — you're on the list.");
+      setFormData({ ...initialFormState, status: formData.status });
+      setStatusMessage("Thanks — you're on the list. Your submission was received.");
+
       toast({
         title: "You're on the list",
         description: "Thanks for adding yourself to the picture.",

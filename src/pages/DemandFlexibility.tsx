@@ -19,8 +19,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import { GOOGLE_APPS_SCRIPT_URL } from "@/lib/contact";
+import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.png";
+
 
 const ASSET_OPTIONS = [
   "EV / EV charger",
@@ -102,39 +103,58 @@ const DemandFlexibility = () => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isSubmitting) return;
+
+    if (!formData.name.trim() || !formData.email.trim() || !formData.zip.trim() || !formData.status) {
+      setStatusMessage("Please fill in your name, email, and ZIP code.");
+      return;
+    }
+
     setIsSubmitting(true);
     setStatusMessage("Submitting...");
 
     try {
-      await fetch(GOOGLE_APPS_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({
-          ...formData,
-          assets: formData.assets.join(", "),
-          interests: formData.interests.join(", "),
-          submittedAt: new Date().toISOString(),
-          source: "Demand Flexibility page",
-        }),
+      const { error } = await supabase.from("demand_flex_submissions").insert({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        zip_code: formData.zip.trim(),
+        electricity_provider: formData.provider.trim() || null,
+        participant_type:
+          formData.status === "today" ? "has_flexibility_today" : "interested_in_future",
+        customer_type: formData.customerType || null,
+        asset_types: formData.status === "today" ? formData.assets : formData.interests,
+        existing_program_participation:
+          formData.status === "today" && formData.inProgram
+            ? formData.inProgram === "notsure"
+              ? "not_sure"
+              : formData.inProgram
+            : null,
+        notify_preference: formData.status === "future" && formData.notify ? formData.notify : null,
       });
 
-      setFormData(initialFormState);
-      setStatusMessage("Thanks — you're on the list.");
+      if (error) throw error;
+
+      setFormData({ ...initialFormState, status: formData.status });
+      setStatusMessage("Thanks — you're on the list. Your submission was received.");
+
       toast({
         title: "You're on the list",
         description: "Thanks for adding yourself to the picture.",
       });
     } catch {
-      setStatusMessage("Something went wrong. Please try again.");
+      setStatusMessage(
+        "We couldn't save your submission. Please try again, or email hello@gridforge.energy."
+      );
       toast({
         title: "Submission failed",
-        description: "Please try again, or email hello@gridforge.energy.",
+        description: "Your submission was not received. Please try again.",
+        variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">

@@ -551,20 +551,6 @@ const DemandFlexibility = () => {
         </div>
       </section>
 
-      {/* Future map placeholder */}
-      <section className="max-w-3xl mx-auto px-6 py-20 text-center">
-        <div className="rounded-2xl border border-dashed border-border bg-card/50 px-6 py-14">
-          <div className="grid-bg h-24 w-full max-w-md mx-auto rounded-xl opacity-40 mb-8" />
-          <h2 className="text-xl md:text-2xl font-display font-semibold tracking-tight mb-3">
-            The picture is just getting started
-          </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            As submissions grow, this space will show an aggregate view of participation —
-            total submissions, states represented, and flexible assets — with ZIP-level detail
-            appearing only once privacy thresholds are met.
-          </p>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="border-t border-border py-10 px-6">

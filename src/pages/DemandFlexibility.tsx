@@ -9,10 +9,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -296,6 +294,7 @@ const DemandFlexibility = () => {
                         id="df-zip"
                         inputMode="numeric"
                         autoComplete="postal-code"
+                        placeholder="e.g. 94612"
                         value={formData.zip}
                         onChange={(e) => setFormData((c) => ({ ...c, zip: e.target.value }))}
                         required
@@ -305,7 +304,7 @@ const DemandFlexibility = () => {
                       <Label htmlFor="df-provider">Electricity provider</Label>
                       <Input
                         id="df-provider"
-                        placeholder="e.g. your utility"
+                        placeholder="e.g. PG&E, SCE, SMUD, or Not sure"
                         value={formData.provider}
                         onChange={(e) => setFormData((c) => ({ ...c, provider: e.target.value }))}
                       />
@@ -336,49 +335,59 @@ const DemandFlexibility = () => {
                     <>
                       <div className="space-y-3">
                         <Label>
-                          Flexible assets you have today{" "}
+                          What do you have?{" "}
                           <span className="text-muted-foreground font-normal">
                             (select any that apply)
                           </span>
                         </Label>
-                        <div className="grid sm:grid-cols-2 gap-3">
-                          {ASSET_OPTIONS.map((asset) => (
-                            <div key={asset} className="flex items-center gap-2">
-                              <Checkbox
-                                id={`df-asset-${asset}`}
-                                checked={formData.assets.includes(asset)}
-                                onCheckedChange={() => toggleAsset(asset)}
-                              />
-                              <Label htmlFor={`df-asset-${asset}`} className="font-normal">
+                        <div className="flex flex-wrap gap-2">
+                          {ASSET_OPTIONS.map((asset) => {
+                            const active = formData.assets.includes(asset);
+                            return (
+                              <button
+                                key={asset}
+                                type="button"
+                                onClick={() => toggleAsset(asset)}
+                                className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                                  active
+                                    ? "border-primary bg-primary text-primary-foreground"
+                                    : "border-border bg-muted/40 text-foreground hover:border-primary/50"
+                                }`}
+                              >
                                 {asset}
-                              </Label>
-                            </div>
-                          ))}
+                              </button>
+                            );
+                          })}
                         </div>
                       </div>
 
                       <div className="space-y-3">
                         <Label>
-                          Do you already participate in a demand flexibility or demand response program?
+                          Are you already participating in a demand flexibility or demand
+                          response program?
                         </Label>
-                        <RadioGroup
-                          value={formData.inProgram}
-                          onValueChange={(value) => setFormData((c) => ({ ...c, inProgram: value }))}
-                          required
-                        >
-                          <div className="flex items-center gap-2">
-                            <RadioGroupItem value="yes" id="df-program-yes" />
-                            <Label htmlFor="df-program-yes" className="font-normal">
-                              Yes
-                            </Label>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <RadioGroupItem value="no" id="df-program-no" />
-                            <Label htmlFor="df-program-no" className="font-normal">
-                              No
-                            </Label>
-                          </div>
-                        </RadioGroup>
+                        <div className="flex flex-wrap gap-2">
+                          {["Yes", "No", "Not sure"].map((opt) => {
+                            const value = opt === "Not sure" ? "notsure" : opt.toLowerCase();
+                            const active = formData.inProgram === value;
+                            return (
+                              <button
+                                key={opt}
+                                type="button"
+                                onClick={() =>
+                                  setFormData((c) => ({ ...c, inProgram: value }))
+                                }
+                                className={`rounded-full border px-6 py-2.5 text-sm font-medium transition-colors ${
+                                  active
+                                    ? "border-primary bg-primary text-primary-foreground"
+                                    : "border-border bg-muted/40 text-foreground hover:border-primary/50"
+                                }`}
+                              >
+                                {opt}
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                     </>
                   ) : (
@@ -390,44 +399,56 @@ const DemandFlexibility = () => {
                             (select any that apply)
                           </span>
                         </Label>
-                        <div className="grid sm:grid-cols-2 gap-3">
-                          {INTEREST_OPTIONS.map((interest) => (
-                            <div key={interest} className="flex items-center gap-2">
-                              <Checkbox
-                                id={`df-interest-${interest}`}
-                                checked={formData.interests.includes(interest)}
-                                onCheckedChange={() => toggleInterest(interest)}
-                              />
-                              <Label htmlFor={`df-interest-${interest}`} className="font-normal">
+                        <div className="flex flex-wrap gap-2">
+                          {INTEREST_OPTIONS.map((interest) => {
+                            const active = formData.interests.includes(interest);
+                            return (
+                              <button
+                                key={interest}
+                                type="button"
+                                onClick={() => toggleInterest(interest)}
+                                className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                                  active
+                                    ? "border-primary bg-primary text-primary-foreground"
+                                    : "border-border bg-muted/40 text-foreground hover:border-primary/50"
+                                }`}
+                              >
                                 {interest}
-                              </Label>
-                            </div>
-                          ))}
+                              </button>
+                            );
+                          })}
                         </div>
                       </div>
 
                       <div className="space-y-3">
                         <Label>
-                          Would you like to be notified when a program is available in your area?
+                          Would you like to be notified when a program is available in your
+                          area?
                         </Label>
-                        <RadioGroup
-                          value={formData.notify}
-                          onValueChange={(value) => setFormData((c) => ({ ...c, notify: value }))}
-                          required
-                        >
-                          <div className="flex items-center gap-2">
-                            <RadioGroupItem value="yes" id="df-notify-yes" />
-                            <Label htmlFor="df-notify-yes" className="font-normal">
-                              Yes — let me know
-                            </Label>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <RadioGroupItem value="no" id="df-notify-no" />
-                            <Label htmlFor="df-notify-no" className="font-normal">
-                              Not right now
-                            </Label>
-                          </div>
-                        </RadioGroup>
+                        <div className="flex flex-wrap gap-2">
+                          {[
+                            { label: "Yes — let me know", value: "yes" },
+                            { label: "Not right now", value: "no" },
+                          ].map((opt) => {
+                            const active = formData.notify === opt.value;
+                            return (
+                              <button
+                                key={opt.value}
+                                type="button"
+                                onClick={() =>
+                                  setFormData((c) => ({ ...c, notify: opt.value }))
+                                }
+                                className={`rounded-full border px-6 py-2.5 text-sm font-medium transition-colors ${
+                                  active
+                                    ? "border-primary bg-primary text-primary-foreground"
+                                    : "border-border bg-muted/40 text-foreground hover:border-primary/50"
+                                }`}
+                              >
+                                {opt.label}
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                     </>
                   )}

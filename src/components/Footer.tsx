@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import logoSymbol from "@/assets/logo-symbol.png";
 
 const Footer = () => {

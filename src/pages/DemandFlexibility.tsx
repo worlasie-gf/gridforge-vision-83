@@ -141,13 +141,7 @@ const DemandFlexibility = () => {
       {/* Header */}
       <header className="px-6 py-5 max-w-5xl mx-auto flex items-center justify-between">
         <Link to="/" aria-label="GridForge home">
-          <img src={logo} alt="GridForge Energy" className="h-14 md:h-16" />
-        </Link>
-        <Link
-          to="/"
-          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          gridforge.energy
+          <img src={logo} alt="GridForge Energy" className="h-24 md:h-28" />
         </Link>
       </header>
 

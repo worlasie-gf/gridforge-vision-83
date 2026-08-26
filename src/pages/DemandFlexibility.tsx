@@ -294,6 +294,7 @@ const DemandFlexibility = () => {
                         id="df-zip"
                         inputMode="numeric"
                         autoComplete="postal-code"
+                        placeholder="e.g. 94612"
                         value={formData.zip}
                         onChange={(e) => setFormData((c) => ({ ...c, zip: e.target.value }))}
                         required
@@ -303,7 +304,7 @@ const DemandFlexibility = () => {
                       <Label htmlFor="df-provider">Electricity provider</Label>
                       <Input
                         id="df-provider"
-                        placeholder="e.g. your utility"
+                        placeholder="e.g. PG&E, SCE, SMUD, or Not sure"
                         value={formData.provider}
                         onChange={(e) => setFormData((c) => ({ ...c, provider: e.target.value }))}
                       />

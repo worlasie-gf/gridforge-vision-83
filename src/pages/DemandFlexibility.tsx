@@ -19,8 +19,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import { GOOGLE_APPS_SCRIPT_URL } from "@/lib/contact";
+import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.png";
+
 
 const ASSET_OPTIONS = [
   "EV / EV charger",

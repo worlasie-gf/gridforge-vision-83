@@ -304,7 +304,7 @@ const DemandFlexibility = () => {
                       <Label htmlFor="df-provider">Electricity provider</Label>
                       <Input
                         id="df-provider"
-                        placeholder="e.g. PG&E, SCE, SMUD, or Not sure"
+                        placeholder="e.g. PG&E, Duke Energy, Xcel Energy, Con Edison, Evergy, or Not sure"
                         value={formData.provider}
                         onChange={(e) => setFormData((c) => ({ ...c, provider: e.target.value }))}
                       />
@@ -509,13 +509,9 @@ const DemandFlexibility = () => {
               </AccordionTrigger>
               <AccordionContent className="text-muted-foreground">
                 <p className="mb-3">Any public information will be aggregated.</p>
-                <p className="mb-3">
+                <p>
                   A ZIP code will not appear publicly until at least five submissions have been
                   received for that ZIP code.
-                </p>
-                <p>
-                  Names, email addresses, contact information, and street addresses will never
-                  appear on the public map.
                 </p>
               </AccordionContent>
             </AccordionItem>

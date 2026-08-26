@@ -88,7 +88,7 @@ const DemandFlexibility = () => {
     setFormData((current) => ({
       ...current,
       assets: current.assets.includes(asset)
-        ? current.assets.filter((a) => !== asset)
+        ? current.assets.filter((a) => a !== asset)
         : [...current.assets, asset],
     }));
   };

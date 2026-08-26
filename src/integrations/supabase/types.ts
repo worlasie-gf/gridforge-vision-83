@@ -14,7 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      demand_flex_submissions: {
+        Row: {
+          additional_information: string | null
+          asset_types: string[]
+          consent_to_contact: boolean
+          created_at: string
+          customer_type: string | null
+          electricity_provider: string | null
+          email: string
+          existing_program_participation: string | null
+          id: string
+          name: string
+          notify_preference: string | null
+          participant_type: string
+          zip_code: string
+        }
+        Insert: {
+          additional_information?: string | null
+          asset_types?: string[]
+          consent_to_contact?: boolean
+          created_at?: string
+          customer_type?: string | null
+          electricity_provider?: string | null
+          email: string
+          existing_program_participation?: string | null
+          id?: string
+          name: string
+          notify_preference?: string | null
+          participant_type: string
+          zip_code: string
+        }
+        Update: {
+          additional_information?: string | null
+          asset_types?: string[]
+          consent_to_contact?: boolean
+          created_at?: string
+          customer_type?: string | null
+          electricity_provider?: string | null
+          email?: string
+          existing_program_participation?: string | null
+          id?: string
+          name?: string
+          notify_preference?: string | null
+          participant_type?: string
+          zip_code?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

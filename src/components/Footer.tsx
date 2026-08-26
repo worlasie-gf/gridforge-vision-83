@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import logoSymbol from "@/assets/logo-symbol.png";
 
 const Footer = () => {
@@ -11,7 +12,15 @@ const Footer = () => {
             <p className="text-muted-foreground text-sm">Infrastructure for the flexible grid</p>
           </div>
         </div>
-        <p className="text-muted-foreground/60 text-xs">© {new Date().getFullYear()} GridForge. All rights reserved.</p>
+        <div className="flex flex-col items-center md:items-end gap-2">
+          <Link
+            to="/demand-flexibility"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Demand Flexibility
+          </Link>
+          <p className="text-muted-foreground/60 text-xs">© {new Date().getFullYear()} GridForge. All rights reserved.</p>
+        </div>
       </div>
     </footer>
   );

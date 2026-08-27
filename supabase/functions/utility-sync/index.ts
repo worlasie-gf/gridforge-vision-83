@@ -101,11 +101,6 @@ Deno.serve(async (req) => {
     logEvent({ requestId, operation: "sync", connectionId, status: "ok", recordCount: usage.intervals.length });
     return json({ ok: true, recordCount: usage.intervals.length });
   } catch (err) {
-    // Best-effort failure event; never leak internals.
-    try {
-      const parsed = BodySchema.safeParse(await req.clone().json().catch(() => null)).safe ? null : null;
-      void parsed;
-    } catch { /* ignore */ }
     return handleError(err, requestId);
   }
 });

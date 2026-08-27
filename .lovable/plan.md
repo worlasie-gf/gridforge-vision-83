@@ -98,7 +98,7 @@ All validate input with Zod, return generic errors, and log only request id / co
 
 ## 8. PG&E information still missing
 
-Authorization + token endpoints, API base URL, client credentials, notification/webhook auth mechanism, whether mTLS is required, the certificate itself, scope/`Batch Subscription` semantics, and token lifetime/refresh rules. Until these arrive, endpoints are clearly-labelled placeholders that throw a "not configured" error rather than calling anything.
+Your registered Share My Data client ID and secret, the third-party ID / `ApplicationInformation` resource, the issued client certificate and private key (and which environment: sandbox vs production), your registered redirect URI and notification URI, the sandbox vs production base URLs for your account, the authorized scope string, and the bulk/subscription IDs. Until these arrive the adapter stays in `stub` mode and every PG&E-facing endpoint returns a clearly labelled "not configured" error rather than calling anything.
 
 ## 9. Build order
 

@@ -62,15 +62,390 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      utility_access_audit: {
+        Row: {
+          action: string
+          actor_user_id: string | null
+          connection_id: string | null
+          created_at: string
+          id: string
+          occurred_at: string
+          result: string
+        }
+        Insert: {
+          action: string
+          actor_user_id?: string | null
+          connection_id?: string | null
+          created_at?: string
+          id?: string
+          occurred_at?: string
+          result: string
+        }
+        Update: {
+          action?: string
+          actor_user_id?: string | null
+          connection_id?: string | null
+          created_at?: string
+          id?: string
+          occurred_at?: string
+          result?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "utility_access_audit_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "utility_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      utility_authorizations: {
+        Row: {
+          authorization_ref: string | null
+          connection_id: string
+          created_at: string
+          expires_at: string | null
+          granted_at: string | null
+          id: string
+          revoked_at: string | null
+          scope: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          authorization_ref?: string | null
+          connection_id: string
+          created_at?: string
+          expires_at?: string | null
+          granted_at?: string | null
+          id?: string
+          revoked_at?: string | null
+          scope?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          authorization_ref?: string | null
+          connection_id?: string
+          created_at?: string
+          expires_at?: string | null
+          granted_at?: string | null
+          id?: string
+          revoked_at?: string | null
+          scope?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "utility_authorizations_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "utility_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      utility_connections: {
+        Row: {
+          authorization_status: string
+          authorized_at: string | null
+          connection_status: string
+          created_at: string
+          customer_ref: string
+          id: string
+          last_sync_at: string | null
+          last_sync_status: string | null
+          service_agreement_ref: string | null
+          subscription_ref: string | null
+          updated_at: string
+          user_id: string
+          utility: string
+        }
+        Insert: {
+          authorization_status?: string
+          authorized_at?: string | null
+          connection_status?: string
+          created_at?: string
+          customer_ref: string
+          id?: string
+          last_sync_at?: string | null
+          last_sync_status?: string | null
+          service_agreement_ref?: string | null
+          subscription_ref?: string | null
+          updated_at?: string
+          user_id: string
+          utility?: string
+        }
+        Update: {
+          authorization_status?: string
+          authorized_at?: string | null
+          connection_status?: string
+          created_at?: string
+          customer_ref?: string
+          id?: string
+          last_sync_at?: string | null
+          last_sync_status?: string | null
+          service_agreement_ref?: string | null
+          subscription_ref?: string | null
+          updated_at?: string
+          user_id?: string
+          utility?: string
+        }
+        Relationships: []
+      }
+      utility_data_metadata: {
+        Row: {
+          connection_id: string
+          created_at: string
+          id: string
+          period_end: string | null
+          period_start: string | null
+          processing_status: string
+          record_count: number
+          updated_at: string
+          verification_status: string
+        }
+        Insert: {
+          connection_id: string
+          created_at?: string
+          id?: string
+          period_end?: string | null
+          period_start?: string | null
+          processing_status?: string
+          record_count?: number
+          updated_at?: string
+          verification_status?: string
+        }
+        Update: {
+          connection_id?: string
+          created_at?: string
+          id?: string
+          period_end?: string | null
+          period_start?: string | null
+          processing_status?: string
+          record_count?: number
+          updated_at?: string
+          verification_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "utility_data_metadata_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "utility_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      utility_oauth_states: {
+        Row: {
+          code_verifier: string | null
+          consumed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          state: string
+          user_id: string
+        }
+        Insert: {
+          code_verifier?: string | null
+          consumed_at?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          state: string
+          user_id: string
+        }
+        Update: {
+          code_verifier?: string | null
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          state?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      utility_oauth_tokens: {
+        Row: {
+          access_token_encrypted: string
+          connection_id: string
+          created_at: string
+          id: string
+          refresh_token_encrypted: string | null
+          token_expires_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          access_token_encrypted: string
+          connection_id: string
+          created_at?: string
+          id?: string
+          refresh_token_encrypted?: string | null
+          token_expires_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          access_token_encrypted?: string
+          connection_id?: string
+          created_at?: string
+          id?: string
+          refresh_token_encrypted?: string | null
+          token_expires_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "utility_oauth_tokens_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: true
+            referencedRelation: "utility_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      utility_sync_events: {
+        Row: {
+          connection_id: string
+          created_at: string
+          error_category: string | null
+          id: string
+          occurred_at: string
+          record_count: number | null
+          status: string
+        }
+        Insert: {
+          connection_id: string
+          created_at?: string
+          error_category?: string | null
+          id?: string
+          occurred_at?: string
+          record_count?: number | null
+          status: string
+        }
+        Update: {
+          connection_id?: string
+          created_at?: string
+          error_category?: string | null
+          id?: string
+          occurred_at?: string
+          record_count?: number | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "utility_sync_events_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "utility_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      utility_usage_intervals: {
+        Row: {
+          connection_id: string
+          created_at: string
+          id: string
+          interval_duration_seconds: number
+          interval_start: string
+          quality: string | null
+          usage_point_ref: string | null
+          value_wh: number
+        }
+        Insert: {
+          connection_id: string
+          created_at?: string
+          id?: string
+          interval_duration_seconds: number
+          interval_start: string
+          quality?: string | null
+          usage_point_ref?: string | null
+          value_wh: number
+        }
+        Update: {
+          connection_id?: string
+          created_at?: string
+          id?: string
+          interval_duration_seconds?: number
+          interval_start?: string
+          quality?: string | null
+          usage_point_ref?: string | null
+          value_wh?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "utility_usage_intervals_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "utility_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "utility_data_viewer" | "customer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -197,6 +572,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "utility_data_viewer", "customer"],
+    },
   },
 } as const

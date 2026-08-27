@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
@@ -169,8 +169,8 @@ const AdminDataConnections = () => {
                 </tr>
               )}
               {connections.map((c) => (
-                <>
-                  <tr key={c.id} className="border-b border-[#E2E8F0] last:border-0">
+                <Fragment key={c.id}>
+                  <tr className="border-b border-[#E2E8F0] last:border-0">
                     <td className="px-4 py-3 font-mono text-xs text-[#273A59]">{c.customerRef}</td>
                     <td className="px-4 py-3 uppercase text-[#5A6B82]">{c.utility}</td>
                     <td className="px-4 py-3">
@@ -226,7 +226,7 @@ const AdminDataConnections = () => {
                     </td>
                   </tr>
                   {usageFor === c.id && (
-                    <tr key={`${c.id}-usage`} className="bg-[#F7FAFC]">
+                    <tr className="bg-[#F7FAFC]">
                       <td colSpan={9} className="px-4 py-4">
                         {usageLoading ? (
                           <Loader2 className="mx-auto h-5 w-5 animate-spin text-[#4EB3A6]" />
@@ -259,7 +259,7 @@ const AdminDataConnections = () => {
                       </td>
                     </tr>
                   )}
-                </>
+                </Fragment>
               ))}
             </tbody>
           </table>

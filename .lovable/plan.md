@@ -21,7 +21,14 @@ Key rules baked in:
 - The frontend talks only to a small set of named backend endpoints; it never knows PG&E URLs.
 
 ### Mutual TLS answer (important)
-Supabase Edge Functions run on Deno Deploy, which does **not** support client-certificate (two-way TLS) outbound connections. If PG&E requires mTLS for the token/data endpoints — which Share My Data historically does — the edge functions can host the OAuth redirect, callback, admin API, and webhook receive, but the actual PG&E API calls will need a dedicated backend service (a small containerised Node/Deno service on Fly.io/Render/Cloud Run) holding the client cert and private key. The plan is structured so that swap is a config change: `PGE_API_TRANSPORT = "edge" | "proxy"` plus a `PGE_PROXY_URL` + shared auth token. No PG&E network call is written before you confirm the mTLS requirement.
+Supabase Edge Functions run on Deno Deploy, which does **not** support client-certificate (two-way TLS) outbound connections. PG&E Share My Data requires mutual TLS on its token and resource endpoints, so the edge functions will host the OAuth redirect, callback, admin API, and notification receiver, while the actual PG&E calls go through a dedicated small backend service (containerised Node/TypeScript on Fly.io / Render / Cloud Run) that holds the client certificate and private key. The plan is structured so this is a config switch: `PGE_API_TRANSPORT = "stub" | "proxy"` plus `PGE_PROXY_URL` and a shared service token. Until that proxy is provisioned, the adapter runs in `stub` mode and returns a clearly labelled "not configured" error — no fabricated endpoints or credentials.
+
+### PG&E SDK as reference only
+PG&E's published JavaScript SDK is treated strictly as reference material for understanding their OAuth handshake, mTLS setup, notification (`/Notification`) behaviour, and ESPI/Green Button Atom+XML data structures. None of it is copied. The production integration is written as fresh server-side TypeScript with current maintained libraries (native `fetch`/`undici` with a TLS-configured agent, `fast-xml-parser` for ESPI Atom feeds, Zod for validation).
+
+### ESPI data model
+PG&E returns Green Button ESPI Atom feeds (`UsagePoint` → `MeterReading` → `IntervalBlock` → `IntervalReading`, plus `ElectricPowerUsageSummary` and `ApplicationInformation`/`Authorization` resources). The parser normalises these into: connection ↔ usage point mapping, interval readings (start, duration, value, quality), and reading-type scaling (`powerOfTenMultiplier`, `uom`) applied once at ingest so stored values are in canonical Wh/W. `Subscription`/`Bulk` IDs from PG&E are stored as opaque references on `utility_connections`.
+
 
 ## 2. Routes (all private, none linked publicly)
 

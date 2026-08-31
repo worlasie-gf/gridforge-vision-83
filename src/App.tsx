@@ -38,14 +38,10 @@ const App = () => (
 
             {/* Private operational routes — not linked from public navigation */}
             <Route path="/login" element={<Login />} />
-            <Route
-              path="/connect/pge"
-              element={
-                <RequireAuth>
-                  <ConnectPge />
-                </RequireAuth>
-              }
-            />
+            {/* Publicly reachable so PG&E-initiated authorization can land here.
+                The page shows no customer data before authentication. */}
+            <Route path="/connect/pge" element={<ConnectPge />} />
+
             <Route
               path="/oauth/pge/callback"
               element={

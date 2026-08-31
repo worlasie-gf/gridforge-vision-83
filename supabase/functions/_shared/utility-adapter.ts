@@ -169,14 +169,52 @@ class PgeAdapter implements UtilityAdapter {
     return parseEspiUsageFeed(xml);
   }
 
+  /**
+   * Notification verification is PLUGGABLE and fails closed.
+   *
+   * PG&E's actual notification authentication mechanism is NOT confirmed yet.
+   * `PGE_NOTIFICATION_VERIFIER` selects the strategy once PG&E's testing
+   * documentation states what it is:
+   *
+   *   unset / "none"  -> reject everything (current, correct default)
+   *   "hmac"          -> shared-secret HMAC-SHA256 over the raw body,
+   *                      header name from PGE_NOTIFICATION_SIGNATURE_HEADER
+   *                      (provisional; do not register with PG&E as fact)
+   *   "gateway"       -> delegate to the dedicated mTLS gateway service,
+   *                      which terminated the PG&E client-certificate TLS
+   *                      handshake and can attest the caller
+   */
   async verifyNotification(body: string, headers: Headers): Promise<{ valid: boolean; resourceRef?: string }> {
-    const secret = pgeEnv("PGE_NOTIFICATION_SECRET");
-    if (!secret) {
-      // Fail closed: without a configured validation mechanism we do not
-      // process any notification.
-      throw new UtilityNotConfiguredError("PG&E notification validation is not configured");
+    const mode = pgeEnv("PGE_NOTIFICATION_VERIFIER") ?? "none";
+
+    if (mode === "none") {
+      throw new UtilityNotConfiguredError(
+        "PG&E notification verification is not configured (awaiting PG&E's documented mechanism)",
+      );
     }
-    const signature = headers.get("x-pge-signature") ?? headers.get("x-hub-signature-256") ?? "";
+
+    if (mode === "gateway") {
+      const res = await this.proxyFetch("/notifications/verify", {
+        method: "POST",
+        body: JSON.stringify({
+          body,
+          headers: Object.fromEntries(headers.entries()),
+        }),
+      });
+      if (!res.ok) return { valid: false };
+      const result = (await res.json()) as { valid?: boolean; resource_ref?: string };
+      if (!result.valid) return { valid: false };
+      return { valid: true, resourceRef: result.resource_ref ?? extractResourceRef(body) };
+    }
+
+    if (mode !== "hmac") {
+      throw new UtilityNotConfiguredError(`Unknown PGE_NOTIFICATION_VERIFIER: ${mode}`);
+    }
+
+    const secret = requireEnv("PGE_NOTIFICATION_SECRET");
+    const headerName = pgeEnv("PGE_NOTIFICATION_SIGNATURE_HEADER") ?? "x-pge-signature";
+    const signature = headers.get(headerName) ?? "";
+    if (!signature) return { valid: false };
     const key = await crypto.subtle.importKey(
       "raw",
       new TextEncoder().encode(secret),
@@ -185,18 +223,21 @@ class PgeAdapter implements UtilityAdapter {
       ["sign"],
     );
     const expected = new Uint8Array(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(body)));
-    const provided = signature.replace(/^sha256=/, "");
-    const providedBytes = hexToBytes(provided);
+    const providedBytes = hexToBytes(signature.replace(/^sha256=/, ""));
     if (providedBytes.length !== expected.length) return { valid: false };
     let diff = 0;
     for (let i = 0; i < expected.length; i++) diff |= expected[i] ^ providedBytes[i];
     if (diff !== 0) return { valid: false };
-    // Resource reference (subscription URI) is extracted without parsing
-    // customer data into logs.
-    const match = body.match(/Batch\/Subscription\/(\w+)/) ?? body.match(/Subscription\/(\w+)/);
-    return { valid: true, resourceRef: match?.[1] };
+    return { valid: true, resourceRef: extractResourceRef(body) };
   }
 }
+
+/** Subscription reference only — never customer data into logs. */
+function extractResourceRef(body: string): string | undefined {
+  const match = body.match(/Batch\/Subscription\/(\w+)/) ?? body.match(/Subscription\/(\w+)/);
+  return match?.[1];
+}
+
 
 function hexToBytes(hex: string): Uint8Array {
   if (!/^[0-9a-fA-F]*$/.test(hex) || hex.length % 2 !== 0) return new Uint8Array(0);

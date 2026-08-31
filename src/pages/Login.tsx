@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/lib/auth-context";
 import PrivateMeta from "@/components/PrivateMeta";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,20 @@ const Login = () => {
   if (user) {
     navigate(next, { replace: true });
   }
+
+  const handleOAuth = async (provider: "google" | "apple") => {
+    setError(null);
+    setMessage(null);
+    const result = await lovable.auth.signInWithOAuth(provider, {
+      redirect_uri: window.location.origin,
+    });
+    if (result.error) {
+      setError(`Could not sign in with ${provider === "google" ? "Google" : "Apple"}. Please try again.`);
+      return;
+    }
+    if (result.redirected) return;
+    navigate(next, { replace: true });
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
